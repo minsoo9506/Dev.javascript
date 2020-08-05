@@ -242,6 +242,142 @@ arr.push('final');
 console.log(arr);
 // ['zero','one','two',undefined,'final']
 ```
+## 3.5.4 배열과 객체
+- 배열도 객체지만 차이점 존재
+- 배열의 type도 object로 나온다
+  - 배열의 경우 프로토타입이 Array.prototype 객체
+  - Array.prototype 프로토타입이 Object.prototype
+
+```javascript
+var colorArr = ['red', 'black'];
+console.log(colorArr[0]); // red
+var colorObj = {
+    '0' : 'red',
+    '1' : 'black'
+};
+console.log(colorObj[0]); // red
+// 문자로 안하고 숫자로 해도 문자열로 변환해서 return 해준다
+console.log(typeof colorArr); // object
+console.log(typeof colorObj); // object
+
+console.log(colorObj.length); // undefined
+
+console.dir(colorArr.__proto__);
+console.dir(colorObj.__proto__);
+```
+
+## 3.5.5 배열의 프로퍼티 동적 생성
+- index가 숫자말고 객체처럼 동적으로 프로퍼티를 추가할 수 있다
+- 배열 length 프로퍼티는 가장 큰 index가 변했을 경우만 변경
+- `console.dir(arr)` 해서 보면 배열도 객체처럼 'key' : 'value' 형태
+
+```javascript
+var arr = ['zero','one'];
+console.log(arr.length); // 2
+
+arr.color = 'red';
+console.log(arr.length); // 2 (안변함)
+
+console.dir(arr);
+```
+## 3.5.6 배열의 프로퍼티 열거
+```javascript
+for (var i=0; i<arr.length; i++){
+    console.log(i, arr[i]);
+}
+```
+## 3.5.7 배열 요소 삭제
+- `delete` 를 사용하여 삭제하면 
+  - 해당 위치에 `undefined` 할당
+  - length의 값도 그대로
+- 완전히 삭제를 하기 위해서는 `splice()` 배열 메서드 사용
+  - `splice(start, deleteCount, item..)`
+    - `start` : 배열에서 시작 위치
+    - `deleteCount` : start에서 지정한 시작 위치부터 삭제할 요소의 수
+    - `item` : 삭제할 위치에 추가할 요소
+
+```javascript
+var arr = ['zero','one','two'];
+delete arr[1];
+console.log(arr); // ['zeor',undefined, 'two']
+
+arr.splice(1,1);
+console.log(arr) // ['zero','two']
+```
+
+## 3.5.8 `Array()` 생성자 함수
+- `Array()` 생성자 함수는 인자 개숫에 따라 동작이 다르다
+  - 인자 1개이고 숫자 : 호출된 인자를 length로 갖는 빈 배열 생성
+  - 그외의 경우 : 호출된 인자를 요소로 갖는 배열 생성
+- `new` 연산자를 같이 써야한다
+
+```javascript
+var foo = new Array(3);
+console.log(foo); // [undefined,undefined,undefined]
+var bar = new Array(1,2,3);
+console.log(bar); // [1,2,3]
+```
+
+## 3.5.9 유사 배열 객체
+- 일반 객체에 length 프로퍼티 추가
+  - 유사 배열 객체 (array-like objects)
 
 # 3.6 기본 타입과 표준 메서드
+- 기본 타입에서 메서드?
+  - 기본값은 메서드 처리 순간에 객체로 변환
+  - 각 타입별 표준 메서드 호출
+  - 호출이 끝나면 다시 기본값으로 복귀
+
+```javascript
+var num = 0.5;
+console.log(num.toExponential(1)); // 5.0e-1
+console.log('test'.charAt(2)); // 5
+```
+
 # 3.7 연산자
+## 3.7.1 + 연산자
+- 더하기
+- 문자열 연결
+
+```javascript
+var add1 = 1 + 2;
+console.log(add1); // 3
+var add2 = 1 + 'string';
+console.log(add2) // 1string
+```
+
+## 3.7.2 `typeof` 연산자
+- `typeof` 연산자 결과
+  - 숫자 -> number
+  - 문자열 -> string
+  - 불린값 -> boolean
+  - null -> object
+  - undefined -> undefined
+  - 객체 -> object
+  - 배열 -> object
+  - 함수 -> function
+
+## 3.7.3 `==`(동등) 연산자와 `===`(일치) 연산자
+- `==` 연산자의 경우 두 피연산자가 타입이 다르므로 같은 타입으로 변환해서 비교
+- `===` 는 타입이 다른 경우 변경 x
+  - 후자를 쓰는 것 추천
+  
+```javascript
+console.log(1 == '1'); // true
+console.log(1 === '1'); // false
+```
+
+## 3.7.4 `!!` 연산자
+- 피연산자를 불린값으로 변환
+
+```javascript
+console.log(!!0); // false
+console.log(!!1); // true
+console.log(!!'str'); // true
+console.log(!!''); // false
+console.log(!!true); // true
+console.log(!!null); // false
+console.log(!!undefined); // false
+console.log(!!{}); // true
+```
+

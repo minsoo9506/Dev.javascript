@@ -82,3 +82,75 @@ arr.length = 5;
 arr.push('final');
 console.log(arr);
 // ['zero','one','two',undefined,'final']
+
+// 3-18 배열과 객체의 유사점과 차이점
+var colorArr = ['red', 'black'];
+console.log(colorArr[0]); // red
+
+var colorObj = {
+    '0' : 'red',
+    '1' : 'black'
+};
+console.log(colorObj[0]); // red
+// 문자로 안하고 숫자로 해도 문자열로 변환해서 return 해준다
+
+console.log(typeof colorArr); // object
+console.log(typeof colorObj); // object
+
+console.log(colorObj.length); // undefined
+
+// 3-20 배열의 동적 프로퍼티 생성
+var arr = ['zero','one'];
+console.log(arr.length); // 2
+
+arr.color = 'red';
+console.log(arr.length); // 2
+
+console.dir(arr);
+
+// 3-21 배열 프로퍼티 열거
+for (var i=0; i<arr.length; i++){
+    console.log(i, arr[i]);
+}
+
+// 3-23
+var arr = ['zero','one','two'];
+delete arr[1];
+console.log(arr); // ['zeor',undefined, 'two']
+
+arr.splice(1,1);
+console.log(arr) // ['zero','two']
+
+// 3-24 Array() 생성자
+var foo = new Array(3);
+console.log(foo); // [undefined,undefined,undefined]
+var bar = new Array(1,2,3);
+console.log(bar); // [1,2,3]
+
+// 3-25,26 유사 배열 객체의 배열 메서드 호출
+var obj = {
+    name : 'foo',
+    length : 1
+};
+obj.push(); // error
+Array.prototype.push.apply(obj, ['bebe']);
+console.log(obj); // {'1':'bebe', name:'foo', length:2}
+
+// 3-27 기본 타입 변수에서의 메서드 호출
+var num = 0.5;
+console.log(num.toExponential(1)); // 5.0e-1
+console.log('test'.charAt(2)); // 5
+
+// 3-29 동등 연산자, 일치 연산자
+console.log(1 == '1'); // true
+console.log(1 === '1'); // false
+
+// 3-30 !! 연산자
+console.log(!!0); // false
+console.log(!!1); // true
+console.log(!!'str'); // true
+console.log(!!''); // false
+console.log(!!true); // true
+console.log(!!null); // false
+console.log(!!undefined); // false
+console.log(!!{}); // true
