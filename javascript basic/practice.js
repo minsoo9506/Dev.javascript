@@ -1,7 +1,6 @@
-var arr = ['zero','one'];
-console.log(arr.length);
+function add(x,y) {
+    return x+y;
+};
 
-arr.color = 'red';
-console.log(arr.length);
-
-console.dir(arr);
+console.log(add.prototype);
+console.log(add.prototype.constructor);
