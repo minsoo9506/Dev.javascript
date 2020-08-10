@@ -1,6 +1,10 @@
-function add(x,y) {
-    return x+y;
-};
+function sum() {
+    var result = 0;
+    for(var i = 0; i < arguments.length; i++){
+        result += arguments[i];
+    }
+    return result;
+}
 
-console.log(add.prototype);
-console.log(add.prototype.constructor);
+console.log(sum(1,2,3));
+console.log(sum(1,2,3,4,5,6,7));
