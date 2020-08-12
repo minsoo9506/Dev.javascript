@@ -380,4 +380,3 @@ console.log(!!null); // false
 console.log(!!undefined); // false
 console.log(!!{}); // true
 ```
-
