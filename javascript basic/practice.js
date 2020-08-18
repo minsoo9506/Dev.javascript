@@ -1,16 +1,11 @@
-function Person(name){
-    this.name = name;
+var var1 = 1;
+var var2 = 2;
+function func(){
+    var var1 = 10;
+    var var2 = 20;
+    console.log(var1);
+    console.log(var2);
 }
-console.log(Person.prototype.constructor); // Person(name)
-
-var foo = new Person('foo');
-console.log(foo.country); // undefined
-
-Person.prototype = {
-    country : 'korea'
-};
-console.log(Person.prototype.constructor); // Object()
-
-var bar = new Person('bar');
-console.log(foo.country); // undefined
-console.log(bar.country); // korea
+func();
+console.log(var1); // 1
+console.log(var1); // 2
