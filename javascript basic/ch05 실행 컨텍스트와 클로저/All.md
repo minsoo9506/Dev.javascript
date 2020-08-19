@@ -114,4 +114,40 @@ console.log(var1); // 2
 - 전역 실행 컨텍스트가 만들어지고 `func()` 를 실행하면 func 실행 컨텍스트가 만들어진다
 - func 컨텍스트의 스코프 체인은 실행된 함수의 [[scope]] 프로퍼티를 복사한 후, 현재 생성된 변수 객체를 복사한 스코프 체인을 맨 앞에 추가
 
-# 5.4 클로져
+# 5.4 클로저
+## 5.4.1 클로저의 개념
+```javascript
+function outerFunc(){
+    var x = 10;
+    var innerFunc = function() {
+        console.log(x);
+    }
+    return innerFunc;
+}
+
+var Func = outerFunc();
+Func(); // 10
+```
+- `innerFunc()`의 [[scope]]는 `outerFunc()` 변수 객체와 전역 객체를 가진다
+- 근데 위에서 `innerFunc()`은 `outerFunc()`의 실행이 끝난 후 실행된다 (return이면 `outerFunc()`이 끝나는 것이니까)
+  - 그래도 `innerFunc()`의 스코프체인은 변수 `x`를 참조한다! 살아있다!
+- 이것이 클로저라는 개념
+  - 생명 주기가 끝난 외부 함수의 변수를 참조하는 함수 : 클로저
+  - 그리고 클로저로 참조되는 외부 변수를 자유변수 free variable 이라고 한다
+
+```javascript
+// 또 다른 예시
+function outerFunc(arg1, arg2){
+    var local = 8;
+    function innerFunc(innerArg){
+        console.log((arg1+arg2)/(innerArg+local));
+    }
+    return innerFunc;
+}
+
+var exam1 = outerFunc(2,5);
+exam1(2);
+```
+- `outerFunc()`이 실행되면서 생성되는 변수 객체가 스코프체인에 들어가게 되고
+- 이 스코프 체인은 `innerFunc()`의 스코프체인으로 참조
+- `outerFunc()`이 종료되어도 여전히 `innerFunc()`의 [[scope]]으로 참조되어 가비지 컬렉션의 대상이 되지 않는다

@@ -1,11 +1,10 @@
-var var1 = 1;
-var var2 = 2;
-function func(){
-    var var1 = 10;
-    var var2 = 20;
-    console.log(var1);
-    console.log(var2);
+function outerFunc(arg1, arg2){
+    var loca = 8;
+    function innerFunc(innerArg){
+        console.log((arg1+arg2)/(innerArg+local));
+    }
+    return innerFunc;
 }
-func();
-console.log(var1); // 1
-console.log(var1); // 2
+
+var exam1 = outerFunc(2,5);
+exam1(2);
