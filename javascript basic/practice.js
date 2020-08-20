@@ -1,10 +1,9 @@
-function outerFunc(arg1, arg2){
-    var loca = 8;
-    function innerFunc(innerArg){
-        console.log((arg1+arg2)/(innerArg+local));
-    }
-    return innerFunc;
+function countSeconds(howMany){
+    for (var i=1; i<=howMany; i++){
+            setTimeout(function(){
+                console.log(i);
+            }, i*1000);
+        }
 }
 
-var exam1 = outerFunc(2,5);
-exam1(2);
+countSeconds(3);

@@ -151,3 +151,153 @@ exam1(2);
 - `outerFunc()`이 실행되면서 생성되는 변수 객체가 스코프체인에 들어가게 되고
 - 이 스코프 체인은 `innerFunc()`의 스코프체인으로 참조
 - `outerFunc()`이 종료되어도 여전히 `innerFunc()`의 [[scope]]으로 참조되어 가비지 컬렉션의 대상이 되지 않는다
+
+## 5.4.2 클로저의 활용
+### 5.4.2.1 특정 함수에 사용자가 정의한 객체의 메서드 연결하기
+
+```javascript
+function HelloFunc(){
+    this.greeting = 'hello';
+}
+HelloFunc.prototype.call = function(func){
+    func ? func(this.greeting) : this.func(this.greeting);
+}
+
+var userFunc = function(greeting){
+    console.log(greeting);
+};
+
+var objHello = new HelloFunc();
+objHello.func = userFunc;
+objHello.call(); // hello
+```
+
+### 5.4.2.2 함수의 캡슐화
+```javascript
+var buffAr = [
+    'I am ',
+    '',
+    '. I live in ',
+    '' 
+];
+
+function getCompleteStr(name, city){
+    buffAr[1] = name;
+    buffAr[3] = city;
+
+    return buffAr.join('');
+}
+
+var str = getCompleteStr('minsoo','Seoul');
+console.log(str);
+```
+- 위와 같이 하면 문제가 있다
+  - 전역변수를 사용하여 외부에 노출!
+- 이를 해결하기 위해 아래와 같이 해본다
+
+```javascript
+var getCompleteStr = (function(){
+    var buffAr = [
+        'I am ',
+        '',
+        '. I live in ',
+        '' 
+    ];
+    return (function(name, city){
+        buffAr[1] = name;
+        buffAr[3] = city;
+    
+        return buffAr.join('');
+    });
+})();
+
+var str = getCompleteStr('minsoo', 'Seoul');
+console.log(str);
+```
+
+### 5.4.2.3 `setTimeout()`에 지정되는 함수의 사용자 정의
+- `setTimeout()`
+  - 첫번째 인자 : 함수 객체
+  - 두번째 인자 : 해당 시간 간격으로 함수 실행
+- 근데 인자로 받는 함수 객체에 인자를 넣고 싶으면? 클로저!
+
+```javascript
+function callLater(obj, a, b){
+    return (function(){
+        obj['sum'] = a + b;
+        console.log(obj['sum']);
+    });
+}
+
+var sumObj = {
+    sum : 0
+}
+
+var func = callLater(sumObj, 1, 2);
+setTimeout(func, 50);
+```
+
+## 5.4.3 클로저를 활용할 때 주의사항
+
+### 5.4.3.1 클로저의 프로퍼티값이 쓰기 가능하므로 그 값이 여러 번 호출로 항상 변할 수 있음에 유의해야 한다
+```javascript
+function outerFunc(argNum){
+    var num = argNum;
+    return function(x){
+        num += x;
+        console.log('num : ' + num);
+    }
+}
+
+var exam = outerFunc(40);
+exam(5); // num : 45
+exam(10); // num : 55
+```
+- `num`값이 계속 변화
+
+### 5.4.3.2 하나의 클로저가 여러 함수 객체의 스코프 체인에 들어가 있는 경우도 있다
+```javascript
+function outerFunc(){
+    var x = 0;
+    return {
+        func1 : function(){console.log(++x);},
+        func2 : function(){console.log(-x);}
+    };
+}
+
+var exam = outerFunc();
+exam.func1(); // 1
+exam.func2(); // -1
+```
+- 각 함수가 호출될 때마다 `x` 값 변화
+
+### 5.4.3.3 루프 안에서 클로저를 활용할 때는 주의하자
+- for 문으로 1,2,3을 출력하는 함수를 만들고자 한다
+- 아래와 같이 하면 4,4,4가 나온다
+```javascript
+function countSeconds(howMany){
+    for (var i=1; i<=howMany; i++){
+            setTimeout(function(){
+                console.log(i);
+            }, i*1000);
+        }
+}
+
+countSeconds(3);
+```
+
+
+- 이렇게 해야된다
+```javascript
+function countSeconds(howMany){
+    for (var i=1; i<=howMany; i++){
+        (function(currentI){
+            setTimeout(function(){
+                console.log(currentI);
+            }, currentI*1000);
+        })(i);
+    }
+}
+
+countSeconds(3);
+```
