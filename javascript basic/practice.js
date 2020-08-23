@@ -1,9 +1,14 @@
-function countSeconds(howMany){
-    for (var i=1; i<=howMany; i++){
-            setTimeout(function(){
-                console.log(i);
-            }, i*1000);
-        }
+Function.prototype.method = function(name, func){
+    this.prototype[name] = func;
 }
 
-countSeconds(3);
+function Person(arg){
+    this.name = arg;
+}
+
+Person.method('getName', function(){
+    return this.name;
+});
+
+var me = new Person('minsoo');
+console.log(me.getName());
