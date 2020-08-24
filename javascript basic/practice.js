@@ -1,14 +1,26 @@
+function Person(arg){
+    this.name = arg;
+}
 Function.prototype.method = function(name, func){
     this.prototype[name] = func;
 }
 
-function Person(arg){
-    this.name = arg;
-}
-
+Person.method('setName', function(name){
+    this.name = name;
+})
 Person.method('getName', function(){
     return this.name;
-});
+})
 
-var me = new Person('minsoo');
-console.log(me.getName());
+function Student(arg){
+}
+
+function F() {};
+F.prototype = Person.prototype;
+Student.prototype = new F();
+Student.prototype.constructor = Student;
+
+Student.super = Person.prototype;
+
+var me = new Student();
+me.setName('Minsoo');
