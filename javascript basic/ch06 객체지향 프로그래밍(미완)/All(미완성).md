@@ -153,3 +153,106 @@ Student.super = Person.prototype;
 var me = new Student();
 me.setName('Minsoo');
 ```
+
+# 6.3 캡슐화
+- `this` 객체의 프로퍼티로 선언하면 외부에서 `new` 키워드로 생성한 객체로 접근할 수 있다
+- 하지만 `var`로 선언된 멤버들은 외부에서는 접근이 불가능
+  - 메서드를 이용해서 접근
+
+```javascript
+function Person(arg){
+    var name = arg ? arg : 'default';
+
+    this.getName = function(){
+        return name;
+    }
+    this.setName = function(){
+        name = arg;
+    }
+}
+
+var me = new Person('minsoo');
+console.log(me.getName());
+consolg.log(me.name); // undefined
+```
+- 아래처럼 메서드가 담겨있는 객체를 반환하는 함수도 많이 사용한다고 한다
+```javascript
+// 예제 6-10
+var Person =  function(arg){
+    var name = arg ? arg : 'default';
+    
+    return {
+        getName : function(){
+            return name;
+        },
+        setName : function(arg){
+            name = arg;
+        }
+    };
+}
+
+var me = new Person('minsoo');
+console.log(me.getName());
+console.log(me.name); // undefined
+```
+- 근데 문제는 private 멤버가 객체나 배열이면 얕은 복사로 참조만을 반환!
+```javascript
+var ArrCreate = function(arg){
+    var arr = [1,2,3];
+
+    return {
+        getArr : function(){
+            return arr;
+        }
+    }
+}
+
+var obj = ArrCreate();
+var arr = obj.getArr();
+arr.push(5);
+console.log(obj.getArr()); // [1,2,3,5]
+```
+- 위의 예제 6-10을 보면 `Person`을 부모로 하는 프로토타입을 이용한 상속을 구현하기가 용이하지 않다는 것을 알수 있다
+
+```javascript
+var Person = function(arg){
+    var name = arg ? arg : 'default';
+
+    var Func = function(){}
+    Func.prototype = {
+        getName : function(){
+            return name;
+        },
+        setName : function(){
+            name = arg;
+        }
+    };
+    return Func;
+}();
+
+var me = new Person();
+console.log(me.getName());
+```
+
+# 6.4 객체지향 프로그래밍 응용 예제
+## 6.4.1 클래스의 기능을 가진 subClass 함수
+### 6.4.1.1 subClass 함수 구조
+
+```javascript
+function subClass(obj){
+    // 1 자식 클래스 생성
+    // 2 생정자 호출
+    // 3 프로토타입 체인을 활용한 상속 구현
+    // 4 obj를 통해 들어온 변수 및 메서드를 자식 클래스에 추가
+    // 5 자식 함수 객체 반환
+}
+```
+
+### 6.4.1.2 자식 클래스 생성 및 상속
+### 6.4.1.3 자식 클래스 확장
+### 6.4.1.4 생성자 호출
+### 6.4.1.5 subClass 보완
+### 6.4.1.6 subClass 활용
+### 6.4.1.7 subClass 함수에 클로저 적용
+
+## 6.4.2 subClass 함수와 모듈 패턴을 이용한 객체지향 프로그래밍
