@@ -1,2 +1,2 @@
-- javascript basic (2020.08~)
-  - 인사이트 자바스크립트 (송현주, 고현준 지음)
+- javascript basic (2020.08~) :  인사이트 자바스크립트 (송현주, 고현준 지음)
+- youtube ellie 기본강의
